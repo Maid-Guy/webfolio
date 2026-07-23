@@ -26,7 +26,7 @@ export function DialogNoCloseButton() {
       >
         <DialogHeader className="items-center gap-4 text-center">
           <img
-            src="/images/me-stein.jpg"
+            src="/images/profile-pic.jpg"
             alt="Riccardo Barone"
             className="size-28 rounded-full object-cover ring-2 ring-chart-4/40"
           />
@@ -89,6 +89,23 @@ type Tab = {
 // Neue Register fügst du einfach hier in das Array ein.
 const tabs: Tab[] = [
   {
+    id: "animations",
+    label: "Motion",
+    images: [],
+    videos: [
+      // Sobald deine Datei in public/videos/ liegt, diese Zeile aktivieren
+      // (das "//" davor entfernen) und Pfad + Beschreibung anpassen:
+     { src: "/videos/Animationsbeispiele_Riccardo_Barone_2026.mp4", alt: "Animations-Compilation", caption: "Advertising animation reel created for an optician client" },
+     { src: "/videos/bee_a_bomb_scarface.mp4", alt: "Scarface-Parody", caption: "Scarface-Parody – semester project", muted: false },
+     { src: "/videos/streaming_animation_1.mp4", alt: "Idle-Animation for Streaming", caption: "Idle Animation for Streaming" },
+    ],
+    audios: [],
+    links: [],
+    youtubeVideos: [
+      { videoId: "xnL8Ew_2nPc", title: "Music Video – for a semester project inspired by deceleration (Cut/ VFX and I cared for the snails)" },
+    ],
+  },
+  {
     id: "illustrations",
     label: "Visuals",
     images: [
@@ -110,23 +127,6 @@ const tabs: Tab[] = [
     audios: [],
     links: [],
     youtubeVideos: [],
-  },
-  {
-    id: "animations",
-    label: "Motion",
-    images: [],
-    videos: [
-      // Sobald deine Datei in public/videos/ liegt, diese Zeile aktivieren
-      // (das "//" davor entfernen) und Pfad + Beschreibung anpassen:
-     { src: "/videos/Animationsbeispiele_Riccardo_Barone_2026.mp4", alt: "Animations-Compilation", caption: "Advertising animation reel created for an optician client" },
-     { src: "/videos/bee_a_bomb_scarface.mp4", alt: "Scarface-Parody", caption: "Scarface-Parody – semester project", muted: false },
-     { src: "/videos/streaming_animation_1.mp4", alt: "Idle-Animation for Streaming", caption: "Idle Animation for Streaming" },
-    ],
-    audios: [],
-    links: [],
-    youtubeVideos: [
-      { videoId: "xnL8Ew_2nPc", title: "Music Video – for a semester project inspired by deceleration (Cut/ VFX and I cared for the snails)" },
-    ],
   },
   {
     id: "sounds",
