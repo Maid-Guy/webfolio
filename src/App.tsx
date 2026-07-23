@@ -36,7 +36,7 @@ export function DialogNoCloseButton() {
               Riccardo Barone
             </DialogTitle>
             <p className="mt-1 text-xs uppercase tracking-[0.3em] text-chart-4">
-              Developer · Animator · Sound Designer · Gamer 
+              Artist · Sound Designer · Developer · Gamer 
             </p>
           </div>
 
@@ -60,16 +60,29 @@ export function DialogNoCloseButton() {
 
 // --- Typen: sie beschreiben, welche Felder ein Objekt haben MUSS ---
 // Ein Medien-Element (Bild ODER Video) hat immer eine Quelle (src) und einen
-// Beschreibungstext (alt) für Barrierefreiheit.
-type MediaItem = { src: string; alt: string }
+// Beschreibungstext (alt) für Barrierefreiheit. "caption" ist optional (das "?")
+// und wird, wenn vorhanden, sichtbar unter dem Bild angezeigt. "muted" gilt nur
+// für Videos: ohne Angabe startet ein Video stummgeschaltet (praktisch für
+// Showreel-artige Loops); mit "muted: false" ist der Ton direkt an.
+type MediaItem = { src: string; alt: string; caption?: string; muted?: boolean }
 
-// Ein Register (Tab) hat eine id, ein label und je eine Liste Bilder, Videos und Sounds.
+// Ein Link-Eintrag für externe Projekte, die du gebaut hast (z. B. Websites).
+type LinkItem = { href: string; title: string; description: string }
+
+// Ein eingebettetes YouTube-Video. "videoId" ist der Teil aus der URL nach
+// "?v=" -> aus https://www.youtube.com/watch?v=xnL8Ew_2nPc wird "xnL8Ew_2nPc".
+type YoutubeItem = { videoId: string; title: string }
+
+// Ein Register (Tab) hat eine id, ein label und je eine Liste Bilder, Videos,
+// Sounds, Links und YouTube-Videos.
 type Tab = {
   id: string
   label: string
   images: MediaItem[]
   videos: MediaItem[]
   audios: MediaItem[]
+  links: LinkItem[]
+  youtubeVideos: YoutubeItem[]
 }
 
 // --- Daten für die Register (Tabs) ---
@@ -77,28 +90,43 @@ type Tab = {
 const tabs: Tab[] = [
   {
     id: "illustrations",
-    label: "Illustrations",
+    label: "Visuals",
     images: [
-      { src: "/images/Kinich_Zip-Hoodie_2024-10.png", alt: "Kinich" },
-      { src: "/images/Skyfolk Concept.jpg", alt: "Skyfolk" },
-      { src: "/images/mermaid_blue.jpeg", alt: "Riccardo Barone" },
-      { src: "/images/mermaid_orange.jpeg", alt: "Riccardo Barone" },
-      { src: "/images/mermaid_pink.jpeg", alt: "Riccardo Barone" },
+      // "caption" ist der Text, der sichtbar unter dem Bild steht.
+      // Trag hier deine eigene, kurze Beschreibung ein.
+      { src: "/images/Kinich_Zip-Hoodie_2024-10.png", alt: "Kinich", caption: "Fashion – Character-based clothing" },
+      { src: "/images/Skyfolk Concept.jpg", alt: "Skyfolk", caption: "Game – Skyfolk concept" },
+      { src: "/images/mermaid_blue.jpeg", alt: "Riccardo Barone", caption: "Monochrome mermaid – blue" },
+      { src: "/images/mermaid_orange.jpeg", alt: "Riccardo Barone", caption: "Monochrome mermaid – orange" },
+      { src: "/images/mermaid_pink.jpeg", alt: "Riccardo Barone", caption: "Monochrome mermaid – pink" },
+      { src: "/images/Boss Konzept.png", alt: "Boss Konzept", caption: "Game jam – Ashliah Boss concept" },
+      { src: "/images/Main Menu BG 2.png", alt: "Main Menu", caption: "Game jam – Ashliah Main Menu UI Design" },
+      { src: "/images/Options Menu.png", alt: "Options Menu", caption: "Game jam – Ashliah Options Menu UI Design" },
+      { src: "/images/konzept - guard.png", alt: "Guard Konzept", caption: "Game jam – Ashliah Guard concept" },
+      { src: "/images/konzept dwarf player.png", alt: "Dwarf Player Konzept", caption: "Game jam – Ashliah Dwarf Player concept" },
+      { src: "/images/oreling concept.png", alt: "Oreling Concept", caption: "Game jam – Ashliah Oreling concept" },
     ],
     videos: [],
     audios: [],
+    links: [],
+    youtubeVideos: [],
   },
   {
     id: "animations",
-    label: "Animations",
+    label: "Motion",
     images: [],
     videos: [
       // Sobald deine Datei in public/videos/ liegt, diese Zeile aktivieren
       // (das "//" davor entfernen) und Pfad + Beschreibung anpassen:
-     { src: "/videos/Animationsbeispiele_Riccardo_Barone_2026.mp4", alt: "Animations-Compilation" },
-     { src: "/videos/bee_a_bomb_scarface.mp4", alt: "Scarface-Parody" },
+     { src: "/videos/Animationsbeispiele_Riccardo_Barone_2026.mp4", alt: "Animations-Compilation", caption: "Advertising animation reel created for an optician client" },
+     { src: "/videos/bee_a_bomb_scarface.mp4", alt: "Scarface-Parody", caption: "Scarface-Parody – semester project", muted: false },
+     { src: "/videos/streaming_animation_1.mp4", alt: "Idle-Animation for Streaming", caption: "Idle Animation for Streaming" },
     ],
     audios: [],
+    links: [],
+    youtubeVideos: [
+      { videoId: "xnL8Ew_2nPc", title: "Music Video – for a semester project inspired by deceleration (Cut/ VFX and I cared for the snails)" },
+    ],
   },
   {
     id: "sounds",
@@ -108,11 +136,35 @@ const tabs: Tab[] = [
     audios: [
       // Sobald deine mp3 in public/audio/ liegt, diese Zeile aktivieren
       // (das "//" davor entfernen) und Pfad + Beschreibung anpassen:
-    { src: "/sound/Main Menu Music.mp3", alt: "Main menu screen music for Deja Two" },
-    { src: "/sound/tao_nyx_lvl_bg-music.mp3", alt: "Level background music for The Adventures Of Nyx" },
+    { src: "/sound/Main Menu Music.mp3", alt: "Main menu screen music for game-jam" },
+    { src: "/sound/tao_nyx_lvl_bg-music.mp3", alt: "Level background music for The Adventures of Nyx" },
+    ],
+    links: [
+      {
+        href: "https://deronsane.itch.io/adventures-of-nyx",
+        title: "The Adventures of Nyx",
+        description:
+          "The result of a game jam product which I made the music for.",
+      },
+    ],
+    youtubeVideos: [],
+  },
+  {
+    id: "development",
+    label: "Development",
+    images: [],
+    videos: [],
+    audios: [],
+    youtubeVideos: [],
+    links: [
+      {
+        href: "https://www.matt.de",
+        title: "matt.de",
+        description:
+          "A website which I migrated from WordPress and developed in HubSpot. The theme and modules were built in HubL.",
+      },
     ],
   },
-  { id: "apps", label: "Mini-Apps", images: [], videos: [], audios: [] },
 ]
 
 function App() {
@@ -123,6 +175,10 @@ function App() {
   // Wir suchen aus dem Array das Register heraus, das gerade aktiv ist.
   const currentTab = tabs.find((tab) => tab.id === activeTab)
 
+  // Welches Bild gerade groß angezeigt wird (null = kein Bild ausgewählt,
+  // Lightbox ist zu). Ein Klick auf ein Bild setzt diesen State.
+  const [selectedImage, setSelectedImage] = useState<MediaItem | null>(null)
+
   return (
     <main className="min-h-screen bg-neutral-950 text-white">
       {/* justify-start statt justify-center: der Inhalt wird oben "verankert"
@@ -132,7 +188,7 @@ function App() {
       <section className="mx-auto flex min-h-screen max-w-6xl flex-col justify-start px-6 py-20">
         <div className="flex flex-row justify-around">
           <p className="mb-4 text-sm uppercase tracking-[0.3em] text-chart-4">
-            Developer · Illustrator · Sound Designer · Gamer
+            Artist · Sound Designer · Developer · Gamer 
           </p>
           <DialogNoCloseButton />
         </div>
@@ -166,31 +222,92 @@ function App() {
             {currentTab &&
             (currentTab.images.length > 0 ||
               currentTab.videos.length > 0 ||
-              currentTab.audios.length > 0) ? (
+              currentTab.audios.length > 0 ||
+              currentTab.links.length > 0 ||
+              currentTab.youtubeVideos.length > 0) ? (
               <>
-                {/* Bilder und Videos als quadratisches Raster nebeneinander */}
+                {/* Bilder, Videos und YouTube-Thumbnails als quadratisches Raster nebeneinander */}
                 {(currentTab.images.length > 0 ||
-                  currentTab.videos.length > 0) && (
+                  currentTab.videos.length > 0 ||
+                  currentTab.youtubeVideos.length > 0) && (
                   <div className="flex flex-row flex-wrap justify-center gap-6">
                     {currentTab.images.map((image) => (
-                      <img
+                      // <figure> + <figcaption> ist der semantisch passende Weg,
+                      // ein Bild mit einer sichtbaren Unterschrift zu koppeln.
+                      <figure
                         key={image.src}
-                        src={image.src}
-                        alt={image.alt}
-                        className="size-64 rounded-lg object-cover"
-                      />
+                        className="flex w-64 flex-col items-center gap-2"
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setSelectedImage(image)}
+                          className="cursor-zoom-in"
+                        >
+                          <img
+                            src={image.src}
+                            alt={image.alt}
+                            className="size-64 rounded-lg object-cover transition hover:opacity-80"
+                          />
+                        </button>
+                        {image.caption && (
+                          <figcaption className="text-center text-sm text-neutral-400">
+                            {image.caption}
+                          </figcaption>
+                        )}
+                      </figure>
                     ))}
                     {currentTab.videos.map((video) => (
-                      <video
+                      <figure
                         key={video.src}
-                        src={video.src}
-                        aria-label={video.alt}
-                        className="w-64 rounded-lg object-cover"
-                        controls
-                        muted
-                        loop
-                        playsInline
-                      />
+                        className="flex w-64 flex-col items-center gap-2"
+                      >
+                        <video
+                          src={video.src}
+                          aria-label={video.alt}
+                          // size-64 = quadratisch (wie die Bilder). Der Zuschnitt
+                          // gilt nur für diese kleine Vorschau: Browser rendern
+                          // ein <video> im echten (nicht zugeschnittenen)
+                          // Seitenverhältnis, sobald man den nativen
+                          // Vollbild-Button in den Video-Controls anklickt.
+                          className="size-64 rounded-lg object-cover"
+                          controls
+                          // Ohne explizites "muted: false" in den Daten startet
+                          // ein Video stumm (Standard für Showreel-Loops).
+                          muted={video.muted ?? true}
+                          loop
+                          playsInline
+                        />
+                        {video.caption && (
+                          <figcaption className="text-center text-sm text-neutral-400">
+                            {video.caption}
+                          </figcaption>
+                        )}
+                      </figure>
+                    ))}
+                    {/* YouTube-Thumbnails im selben quadratischen Format wie
+                        Bilder/Videos. Klick öffnet YouTube, wo es im echten
+                        Format abgespielt wird. */}
+                    {currentTab.youtubeVideos.map((video) => (
+                      <a
+                        key={video.videoId}
+                        href={`https://www.youtube.com/watch?v=${video.videoId}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="group flex w-64 flex-col items-center gap-2"
+                      >
+                        <img
+                          src={`https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg`}
+                          alt={video.title}
+                          className="size-64 rounded-lg object-cover"
+                        />
+                        <span className="text-center text-sm text-neutral-400">
+                          {video.title}
+                          <br />
+                          <span className="font-medium text-chart-4 group-hover:text-cyan-300">
+                            Watch on YouTube ↗
+                          </span>
+                        </span>
+                      </a>
                     ))}
                   </div>
                 )}
@@ -208,8 +325,32 @@ function App() {
                           {audio.alt}
                         </p>
                         <audio controls className="w-full" src={audio.src}>
-                          Dein Browser unterstützt das Audio-Element nicht.
+                          Your browser does not support the audio element.
                         </audio>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Links zu externen Projekten (z. B. selbst gebaute Websites) */}
+                {currentTab.links.length > 0 && (
+                  <div className="flex w-full max-w-xl flex-col gap-4">
+                    {currentTab.links.map((link) => (
+                      <div
+                        key={link.href}
+                        className="rounded-lg bg-neutral-800 p-4"
+                      >
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="font-medium text-chart-4 underline underline-offset-4 hover:text-cyan-300"
+                        >
+                          {link.title}
+                        </a>
+                        <p className="mt-2 text-sm text-neutral-300">
+                          {link.description}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -217,13 +358,42 @@ function App() {
               </>
             ) : (
               <p className="text-center text-neutral-400">
-                Hier ist noch nichts — kommt bald.
+                Nothing here yet — coming soon.
               </p>
             )}
           </div>
 
         </div>
       </section>
+
+      {/* Lightbox: zeigt das per Klick ausgewählte Bild groß an. "open" wird
+          direkt aus dem State abgeleitet (true, sobald ein Bild ausgewählt
+          ist); onOpenChange feuert auch beim Klick daneben oder Escape-Taste
+          -> dort setzen wir den State wieder auf null, um zu schließen. */}
+      <Dialog
+        open={selectedImage !== null}
+        onOpenChange={(open) => {
+          if (!open) setSelectedImage(null)
+        }}
+      >
+        <DialogContent className="border border-white/10 bg-neutral-900 text-white sm:max-w-3xl">
+          {selectedImage && (
+            <>
+              <DialogTitle className="sr-only">{selectedImage.alt}</DialogTitle>
+              <img
+                src={selectedImage.src}
+                alt={selectedImage.alt}
+                className="max-h-[75vh] w-full rounded-lg object-contain"
+              />
+              {selectedImage.caption && (
+                <DialogDescription className="text-center text-base text-neutral-300">
+                  {selectedImage.caption}
+                </DialogDescription>
+              )}
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </main>
   )
 }
