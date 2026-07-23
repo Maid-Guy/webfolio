@@ -41,9 +41,9 @@ export function DialogNoCloseButton() {
           </div>
 
           <DialogDescription className="max-w-sm text-base leading-7 text-neutral-300">
-            I build interactive experiences. This portfolio showcases my
-            mini-applications, visual experiments, animations, illustrations,
-            and music projects.
+            I build emotional experiences. This portfolio showcases my
+             visual experiments, animations, development skills, illustrations,
+            and audio projects.
           </DialogDescription>
 
           <a
