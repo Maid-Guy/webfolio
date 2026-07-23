@@ -264,12 +264,12 @@ function App() {
                         <video
                           src={video.src}
                           aria-label={video.alt}
-                          // size-64 = quadratisch (wie die Bilder). Der Zuschnitt
-                          // gilt nur für diese kleine Vorschau: Browser rendern
-                          // ein <video> im echten (nicht zugeschnittenen)
-                          // Seitenverhältnis, sobald man den nativen
-                          // Vollbild-Button in den Video-Controls anklickt.
-                          className="size-64 rounded-lg object-cover"
+                          // size-64 + object-cover = quadratischer Zuschnitt für
+                          // die kleine Vorschau. Im Vollbildmodus behält der
+                          // Browser object-cover bei (überschreibt es NICHT von
+                          // selbst) -> [&:fullscreen]:object-contain schaltet
+                          // dort gezielt auf "ganzes Bild sichtbar" um.
+                          className="size-64 rounded-lg object-cover [&:fullscreen]:object-contain [&:-webkit-full-screen]:object-contain"
                           controls
                           // Ohne explizites "muted: false" in den Daten startet
                           // ein Video stumm (Standard für Showreel-Loops).
