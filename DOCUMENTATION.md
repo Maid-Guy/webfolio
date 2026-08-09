@@ -21,7 +21,9 @@ Owner: Riccardo Barone
 10-06-2026
 6. Added color-theme, and register cards function for gallery
 17-07-2026
-7. 
+7. Added more media catagories, updated dialog
+23-07-2026
+8. 
 
 ----------------------------------------------- NEXT STEPS ----------------------------------------------------------------- 
 
@@ -29,3 +31,4 @@ Owner: Riccardo Barone
 2. add profile card (character Sheet, Dialog with picture + stats)
 3. look for a way to present the various applications you've created 
 4. for Multi-pager structure -> Tanstack Router
+5. Add minigame for dialog profile
