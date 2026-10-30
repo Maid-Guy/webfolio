@@ -8,10 +8,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../components/ui/dialog"
+import { PipePuzzle } from "./components/PipePuzzle"
 
 // Content of the dialog
 
 export function DialogNoCloseButton() {
+  const [solved, setSolved] = useState(false)
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -24,35 +27,44 @@ export function DialogNoCloseButton() {
         showCloseButton={false}
         className="border border-white/10 bg-neutral-900 text-white sm:max-w-lg"
       >
-        <DialogHeader className="items-center gap-4 text-center">
-          <img
-            src="/images/profile-pic.jpg"
-            alt="Riccardo Barone"
-            className="size-28 rounded-full object-cover ring-2 ring-chart-4/40"
-          />
+        {solved ? (
+          <DialogHeader className="items-center gap-4 text-center">
+            <img
+              src="/images/profile-pic.jpg"
+              alt="Riccardo Barone"
+              className="size-28 rounded-full object-cover ring-2 ring-chart-4/40"
+            />
 
-          <div>
+            <div>
+              <DialogTitle className="text-xl font-bold tracking-tight text-white">
+                Riccardo Barone
+              </DialogTitle>
+              <p className="mt-1 text-xs uppercase tracking-[0.3em] text-chart-4">
+                Artist · Sound Designer · Developer · Gamer
+              </p>
+            </div>
+
+            <DialogDescription className="max-w-sm text-base leading-7 text-neutral-300">
+              I build emotional experiences. This portfolio showcases my
+               visual experiments, animations, development skills, illustrations,
+              and audio projects.
+            </DialogDescription>
+
+            <a
+              href="mailto:R_Barone@web.de"
+              className="rounded-full border border-white/20 px-4 py-2 text-sm font-medium text-white transition hover:border-chart-4 hover:text-chart-4"
+            >
+              R_Barone@web.de
+            </a>
+          </DialogHeader>
+        ) : (
+          <DialogHeader className="items-center gap-2 text-center">
             <DialogTitle className="text-xl font-bold tracking-tight text-white">
               Riccardo Barone
             </DialogTitle>
-            <p className="mt-1 text-xs uppercase tracking-[0.3em] text-chart-4">
-              Artist · Sound Designer · Developer · Gamer 
-            </p>
-          </div>
-
-          <DialogDescription className="max-w-sm text-base leading-7 text-neutral-300">
-            I build emotional experiences. This portfolio showcases my
-             visual experiments, animations, development skills, illustrations,
-            and audio projects.
-          </DialogDescription>
-
-          <a
-            href="mailto:R_Barone@web.de"
-            className="rounded-full border border-white/20 px-4 py-2 text-sm font-medium text-white transition hover:border-chart-4 hover:text-chart-4"
-          >
-            R_Barone@web.de
-          </a>
-        </DialogHeader>
+            <PipePuzzle onSolved={() => setSolved(true)} />
+          </DialogHeader>
+        )}
       </DialogContent>
     </Dialog>
   )
