@@ -187,6 +187,15 @@ function generateGrid(): Tile[][] {
   return buildGrid()
 }
 
+// Die PNGs haben eine andere Ausgangslage als CANONICAL_MASK, daher ein
+// Drehversatz: pipe-straight.png liegt waagerecht (West+Ost), erwartet wird
+// Nord+Süd -> +90°. pipe-curve.png verbindet West+Süd, erwartet wird
+// Nord+Ost -> +180°.
+const PIPE_IMAGE: Record<Shape, { src: string; offset: number }> = {
+  straight: { src: "/images/pipe-straight.png", offset: 90 },
+  elbow: { src: "/images/pipe-curve.png", offset: 180 },
+}
+
 function PipeTile({ tile, onClick }: { tile: Tile; onClick: () => void }) {
   return (
     <button
@@ -194,41 +203,20 @@ function PipeTile({ tile, onClick }: { tile: Tile; onClick: () => void }) {
       onClick={onClick}
       disabled={tile.fixed}
       aria-label={tile.fixed ? "Fixe Rohr-Kachel" : "Rohr-Kachel drehen"}
-      className={`flex size-12 items-center justify-center rounded-md border transition sm:size-14 ${
+      style={{ backgroundImage: "url('/images/tile-for-pipe-v1.jpg')" }}
+      className={`flex size-12 items-center justify-center overflow-hidden rounded-md border bg-cover bg-center transition sm:size-14 ${
         tile.fixed
-          ? "cursor-default border-chart-4/50 bg-neutral-800"
-          : "cursor-pointer border-white/10 bg-neutral-800 hover:border-chart-4/60 hover:bg-neutral-700"
+          ? "cursor-default border-chart-4/70"
+          : "cursor-pointer border-white/10 hover:border-chart-4/60 hover:brightness-110"
       }`}
     >
-      <svg
-        viewBox="0 0 100 100"
-        className="size-8 transition-transform duration-150 sm:size-10"
-        style={{ transform: `rotate(${tile.rotation}deg)` }}
-      >
-        {tile.shape === "straight" ? (
-          <line
-            x1="50"
-            y1="0"
-            x2="50"
-            y2="100"
-            stroke="currentColor"
-            strokeWidth="14"
-            strokeLinecap="round"
-            className="text-neutral-300"
-            filter="url(#pipe-metal-texture)"
-          />
-        ) : (
-          <path
-            d="M 50 0 L 50 50 L 100 50"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="14"
-            strokeLinecap="round"
-            className="text-neutral-300"
-            filter="url(#pipe-metal-texture)"
-          />
-        )}
-      </svg>
+      <img
+        src={PIPE_IMAGE[tile.shape].src}
+        alt=""
+        draggable={false}
+        className="pointer-events-none size-full select-none object-contain transition-transform duration-150"
+        style={{ transform: `rotate(${tile.rotation + PIPE_IMAGE[tile.shape].offset}deg)` }}
+      />
     </button>
   )
 }
@@ -250,28 +238,6 @@ export function PipePuzzle({ onSolved }: { onSolved: () => void }) {
 
   return (
     <div className="flex flex-col items-center gap-4">
-      {/* Nicht sichtbar selbst, definiert nur den Textur-Filter (feTurbulence
-          erzeugt Rauschen, feComposite/feBlend schneidet es auf die
-          Rohr-Form zu und dunkelt sie fleckig ab) einmal für alle Kacheln,
-          die ihn per filter="url(#pipe-metal-texture)" referenzieren. */}
-      <svg width="0" height="0" aria-hidden="true" className="absolute">
-        <defs>
-          <filter id="pipe-metal-texture" x="-50%" y="-50%" width="200%" height="200%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="noise" />
-            <feColorMatrix
-              in="noise"
-              type="matrix"
-              values="0 0 0 0 0
-                      0 0 0 0 0
-                      0 0 0 0 0
-                      0 0 0 0.55 0"
-              result="noiseAlpha"
-            />
-            <feComposite in="noiseAlpha" in2="SourceAlpha" operator="in" result="clippedNoise" />
-            <feBlend in="SourceGraphic" in2="clippedNoise" mode="multiply" />
-          </filter>
-        </defs>
-      </svg>
       <p className="max-w-xs text-center text-sm text-neutral-300">
         Verbinde die Rohre von links (<span className="text-chart-4">Start</span>) nach
         rechts (<span className="text-chart-4">Ziel</span>), um die Kontaktdaten

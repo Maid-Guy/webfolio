@@ -45,10 +45,6 @@ Local video previews are shown as square crops (`size-64 object-cover`) in the g
 
 Note: `components.json` and `tsconfig.json` both define a `@/*` → `./*` path alias (root-relative), but the codebase does not actually use it anywhere — imports are relative. Don't assume `@/...` imports work in practice without checking; follow the existing relative-import style for consistency.
 
-`src/components/Dialog/DialogContent/DialogHeader/` contains two empty, unused `.ts` stub files (`DialogDescription.ts`, `DiealogTitle.ts` — note the typo) from an early, abandoned scaffolding attempt. They are dead and can be ignored/removed; the real, in-use `Dialog*` components are the shadcn ones in `components/ui/dialog.tsx`.
-
-`src/data/project.ts` (a `Project` type + `projects` array) is also dead code — not imported anywhere. It predates the current `tabs` data model in `App.tsx`.
-
 ### The `Dialog` component is reused for two different purposes
 
 `components/ui/dialog.tsx` (a Radix-based wrapper) backs two distinct UI elements in `App.tsx`:
